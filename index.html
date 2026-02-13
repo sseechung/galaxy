@@ -15,11 +15,9 @@ font-family:monospace;
 
 color:#00ffff;
 
-overflow:hidden;
-
 }
 
-/* ===== NAVBAR ===== */
+/* ===== NAVBAR ALWAYS VISIBLE ===== */
 
 .navbar{
 
@@ -31,11 +29,11 @@ left:0;
 
 width:100%;
 
-background:rgba(0,0,30,0.85);
+background:rgba(0,0,30,0.9);
 
 backdrop-filter:blur(12px);
 
-display:none; /* hidden until password correct */
+display:flex;
 
 justify-content:center;
 
@@ -64,8 +62,6 @@ position:relative;
 padding:18px 30px;
 
 cursor:pointer;
-
-color:#00ffff;
 
 font-weight:bold;
 
@@ -115,13 +111,7 @@ flex-direction:column;
 
 .panel{
 
-position:absolute;
-
-top:55%;
-
-left:50%;
-
-transform:translate(-50%,-50%);
+margin-top:120px;
 
 width:420px;
 
@@ -131,11 +121,13 @@ background:rgba(0,0,40,0.65);
 
 border-radius:25px;
 
-backdrop-filter:blur(15px);
-
 box-shadow:0 0 50px #00ffff;
 
 text-align:center;
+
+margin-left:auto;
+
+margin-right:auto;
 
 }
 
@@ -250,13 +242,11 @@ margin-top:20px;
 </div>
 <script>
 
-/* PASSWORD FUNCTION */
+/* PASSWORD */
 
 function launch(){
 
 if(document.getElementById("pass").value==="stanley"){
-
-document.querySelector(".navbar").style.display="flex";
 
 document.getElementById("login").style.display="none";
 
@@ -294,11 +284,11 @@ alert("ACCESS DENIED");
 
 }
 
-/* TOGGLE DROPDOWN */
+/* Toggle dropdown on click */
 
 function toggleMenu(id){
 
-// Close others first
+// Close other menus
 
 document.querySelectorAll(".dropdown").forEach(menu=>{
 
@@ -316,7 +306,7 @@ document.getElementById(id).classList.toggle("show");
 
 }
 
-/* Close when clicking outside */
+/* Close if click outside navbar */
 
 document.addEventListener("click", function(e){
 
