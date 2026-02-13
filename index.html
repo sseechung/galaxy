@@ -2,12 +2,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>GALAXY OS</title>
+<title>Galaxy Boot</title>
 <style>
 
 body{
 
 margin:0;
+
+overflow:hidden;
 
 background:black;
 
@@ -17,9 +19,9 @@ color:#00ffff;
 
 }
 
-/* ===== NAVBAR ===== */
+/* ===== STARFIELD CANVAS ===== */
 
-.navbar{
+canvas{
 
 position:fixed;
 
@@ -27,105 +29,37 @@ top:0;
 
 left:0;
 
-width:100%;
-
-background:rgba(0,0,30,0.9);
-
-display:flex;
-
-justify-content:center;
-
-box-shadow:0 0 25px #00ffff;
-
-z-index:9999;
+z-index:0;
 
 }
 
-.navbar ul{
+/* ===== CENTER PASSWORD PANEL ===== */
 
-list-style:none;
-
-margin:0;
-
-padding:0;
-
-display:flex;
-
-}
-
-.navbar li{
-
-position:relative;
-
-padding:18px 30px;
-
-cursor:pointer;
-
-font-weight:bold;
-
-}
-
-/* Dropdown style */
-
-.dropdown{
-
-display:none;
+.boot-panel{
 
 position:absolute;
 
-top:58px;
+top:50%;
 
-left:0;
+left:50%;
 
-background:rgba(0,0,40,0.95);
+transform:translate(-50%,-50%);
 
-min-width:200px;
-
-flex-direction:column;
-
-box-shadow:0 0 20px #00ffff;
-
-}
-
-.dropdown li{
-
-padding:12px;
-
-cursor:pointer;
-
-}
-
-/* Active dropdown */
-
-.dropdown.active{
-
-display:flex;
-
-flex-direction:column;
-
-}
-
-/* ===== PANEL ===== */
-
-.panel{
-
-margin-top:120px;
-
-width:420px;
+width:380px;
 
 padding:30px;
 
 background:rgba(0,0,40,0.65);
 
-border-radius:25px;
+border-radius:20px;
 
-box-shadow:0 0 50px #00ffff;
+backdrop-filter:blur(15px);
+
+box-shadow:0 0 40px #00ffff;
 
 text-align:center;
 
-margin-left:auto;
-
-margin-right:auto;
+z-index:2;
 
 }
 
@@ -162,120 +96,70 @@ font-weight:bold;
 cursor:pointer;
 
 }
-
-.progress{
-
-margin-top:20px;
-
-height:20px;
-
-border:1px solid #00ffff;
-
-display:none;
-
-}
-
-.bar{
-
-height:100%;
-
-width:0%;
-
-background:linear-gradient(90deg,#00ffff,#0044ff);
-
-}
-
-#dashboard{
-
-display:none;
-
-margin-top:20px;
-
-}
 </style>
 </head>
 <body>
-<!-- NAVBAR -->
-<div class="navbar">
-<ul>
-<li onclick="openMenu(event,'sysMenu')">
-
-🌌 SYSTEM
-<ul class="dropdown" id="sysMenu">
-<li>Status</li>
-<li>Settings</li>
-<li>Diagnostics</li>
-</ul>
-</li>
-<li onclick="openMenu(event,'navMenu')">
-
-🛰 NAVIGATION
-<ul class="dropdown" id="navMenu">
-<li>Galaxy Map</li>
-<li>Plot Course</li>
-<li>Coordinates</li>
-</ul>
-</li>
-<li onclick="openMenu(event,'defMenu')">
-
-🛡 DEFENSE
-<ul class="dropdown" id="defMenu">
-<li>Shields</li>
-<li>Weapons</li>
-<li>Combat Mode</li>
-</ul>
-</li>
-</ul>
-</div>
-<!-- LOGIN PANEL -->
-<div class="panel">
-<div id="login">
-<h2>🌌 ACCESS TERMINAL</h2>
+<canvas id="space"></canvas>
+<div class="boot-panel">
+<h2>🌌 GALAXY ACCESS</h2>
 <input type="password" id="pass" placeholder="Enter Password">
-<button onclick="launch()">ACTIVATE</button>
-</div>
-<div class="progress" id="progress">
-<div class="bar" id="bar"></div>
-</div>
-<div id="dashboard">
-<h2>WELCOME COMMANDER STANLEY</h2>
-</div>
+<button onclick="checkPassword()">ACTIVATE</button>
 </div>
 <script>
 
-/* PASSWORD */
+/* ===== STARFIELD ANIMATION ===== */
 
-function launch(){
+let canvas=document.getElementById("space");
 
-if(document.getElementById("pass").value==="stanley"){
+let ctx=canvas.getContext("2d");
 
-document.getElementById("login").style.display="none";
+canvas.width=window.innerWidth;
 
-document.getElementById("progress").style.display="block";
+canvas.height=window.innerHeight;
 
-let bar=document.getElementById("bar");
+let stars=[];
 
-let w=0;
+for(let i=0;i<500;i++){
 
-let load=setInterval(function(){
+stars.push({
 
-if(w>=100){
+x:Math.random()*canvas.width,
 
-clearInterval(load);
+y:Math.random()*canvas.height,
 
-document.getElementById("progress").style.display="none";
+size:Math.random()*2
 
-document.getElementById("dashboard").style.display="block";
-
-}else{
-
-w++;
-
-bar.style.width=w+"%";
+});
 
 }
 
-},12);
+function animate(){
+
+ctx.fillStyle="black";
+
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+for(let s of stars){
+
+ctx.fillStyle="#00ffff";
+
+ctx.fillRect(s.x,s.y,s.size,s.size);
+
+}
+
+requestAnimationFrame(animate);
+
+}
+
+animate();
+
+/* PASSWORD */
+
+function checkPassword(){
+
+if(document.getElementById("pass").value==="stanley"){
+
+alert("ACCESS GRANTED");
 
 }else{
 
@@ -284,38 +168,6 @@ alert("ACCESS DENIED");
 }
 
 }
-
-/* OPEN MENU FUNCTION */
-
-function openMenu(event,id){
-
-event.stopPropagation();
-
-/* Close all first */
-
-document.querySelectorAll(".dropdown").forEach(menu=>{
-
-menu.classList.remove("active");
-
-});
-
-/* Open selected */
-
-document.getElementById(id).classList.add("active");
-
-}
-
-/* Close when clicking outside */
-
-document.addEventListener("click",function(){
-
-document.querySelectorAll(".dropdown").forEach(menu=>{
-
-menu.classList.remove("active");
-
-});
-
-});
 </script>
 </body>
 </html>
