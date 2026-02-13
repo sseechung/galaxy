@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>GALAXY OS</title>
+<style>
+
+body{
+
+margin:0;
+
+overflow:hidden;
+
+background:black;
+
+font-family:monospace;
+
+color:#00ffff;
+
+}
+
+/* Screen impact */
+
+@keyframes impact{
+
+0%{transform:scale(1);}
+
+50%{transform:scale(1.03);}
+
+100%{transform:scale(1);}
+
+}
+
+.impact{
+
+animation:impact 0.3s;
+
+}
+
+/* Canvas */
+
+canvas{
+
+position:absolute;
+
+top:0;
+
+left:0;
+
+}
+
+/* Energy planet */
+
+.planet{
+
+position:absolute;
+
+width:350px;
+
+height:350px;
+
+border-radius:50%;
+
+background:radial-gradient(circle at 30% 30%, #00ffff, #001144);
+
+box-shadow:0 0 100px #00ffff;
+
+top:5%;
+
+left:5%;
+
+animation:rotate 60s linear infinite;
+
+opacity:0.35;
+
+}
+
+@keyframes rotate{
+
+from{transform:rotate(0deg);}
+
+to{transform:rotate(360deg);}
+
+}
+
+/* Main Panel */
+
+.panel{
+
+position:absolute;
+
+top:50%;
+
+left:50%;
+
+transform:translate(-50%,-50%);
+
+width:420px;
+
+padding:30px;
+
+background:rgba(0,0,40,0.65);
+
+border-radius:25px;
+
+backdrop-filter:blur(15px);
+
+box-shadow:0 0 50px #00ffff;
+
+text-align:center;
+
+}
+
+/* Input */
+
+input{
+
+width:100%;
+
+padding:12px;
+
+margin-top:15px;
+
+background:black;
+
+border:1px solid #00ffff;
+
+color:#00ffff;
+
+text-align:center;
+
+}
+
+/* Button */
+
+button{
+
+margin-top:15px;
+
+padding:10px 25px;
+
+background:#00ffff;
+
+border:none;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+/* Progress */
+
+.progress{
+
+margin-top:20px;
+
+height:20px;
+
+border:1px solid #00ffff;
+
+display:none;
+
+}
+
+.bar{
+
+height:100%;
+
+width:0%;
+
+background:linear-gradient(90deg,#00ffff,#0044ff);
+
+box-shadow:0 0 25px #00ffff;
+
+}
+
+/* Dashboard */
+
+#dashboard{
+
+display:none;
+
+margin-top:20px;
+
+}
+
+/* Hologram data bars */
+
+.data{
+
+height:10px;
+
+background:#00ffff;
+
+margin-top:10px;
+
+animation:dataMove 1.5s infinite alternate;
+
+}
+
+@keyframes dataMove{
+
+from{width:15%;}
+
+to{width:100%;}
+
+}
+
+/* Command buttons */
+
+.cmd{
+
+margin-top:15px;
+
+padding:10px;
+
+border:1px solid #00ffff;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+.cmd:hover{
+
+background:#00ffff;
+
+color:black;
+
+box-shadow:0 0 20px #00ffff;
+
+}
+</style>
+</head>
+<body>
+<audio id="boot">
+<source src="https://www.soundjay.com/misc/sounds/laser-01.mp3" type="audio/mpeg">
+</audio>
+<div class="planet"></div>
+<canvas id="space"></canvas>
+<div class="panel">
+<div id="login">
+<h2>🌌 FINAL ACCESS</h2>
+<input type="password" id="pass" placeholder="Enter Password">
+<button onclick="launch()">ACTIVATE</button>
+</div>
+<div class="progress" id="progress">
+<div class="bar" id="bar"></div>
+</div>
+<div id="dashboard">
+<h2 id="ai"></h2>
+<div class="data"></div>
+<div class="data"></div>
+<div class="data"></div>
+<div class="cmd" onclick="alert('Navigation Engaged')">🛰 NAVIGATION</div>
+<div class="cmd" onclick="alert('Shields Activated')">🛡 SHIELDS</div>
+<div class="cmd" onclick="alert('Scanning Sector')">🔭 SCAN</div>
+</div>
+</div>
+<script>
+
+let canvas=document.getElementById("space");
+
+let ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+
+canvas.height=window.innerHeight;
+
+let stars=[];
+
+for(let i=0;i<600;i++){
+
+stars.push({
+
+x:Math.random()*canvas.width-canvas.width/2,
+
+y:Math.random()*canvas.height-canvas.height/2,
+
+z:Math.random()*canvas.width
+
+});
+
+}
+
+function animate(){
+
+ctx.fillStyle="black";
+
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+for(let s of stars){
+
+s.z-=6;
+
+if(s.z<=0)s.z=canvas.width;
+
+let k=200/s.z;
+
+let px=s.x*k+canvas.width/2;
+
+let py=s.y*k+canvas.height/2;
+
+let size=(1-s.z/canvas.width)*4;
+
+ctx.fillStyle="#00ffff";
+
+ctx.fillRect(px,py,size,size);
+
+}
+
+requestAnimationFrame(animate);
+
+}
+
+animate();
+
+function launch(){
+
+if(document.getElementById("pass").value==="stanley"){
+
+document.body.classList.add("impact");
+
+document.getElementById("boot").play();
+
+document.getElementById("login").style.display="none";
+
+document.getElementById("progress").style.display="block";
+
+let bar=document.getElementById("bar");
+
+let w=0;
+
+let load=setInterval(function(){
+
+if(w>=100){
+
+clearInterval(load);
+
+document.getElementById("progress").style.display="none";
+
+activateAI();
+
+}else{
+
+w++;
+
+bar.style.width=w+"%";
+
+}
+
+},12);
+
+}else{
+
+alert("ACCESS DENIED");
+
+}
+
+}
+
+function activateAI(){
+
+document.getElementById("dashboard").style.display="block";
+
+let text="GALAXY OS FINAL FORM ONLINE - WELCOME COMMANDER STANLEY";
+
+let i=0;
+
+let ai=document.getElementById("ai");
+
+let typing=setInterval(function(){
+
+if(i<text.length){
+
+ai.innerHTML+=text.charAt(i);
+
+i++;
+
+}else{
+
+clearInterval(typing);
+
+}
+
+},35);
+
+}
+</script>
+</body>
+</html>
+ 
