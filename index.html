@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>GALAXY OS - CLICK MENU</title>
+<title>GALAXY OS</title>
 <style>
 
 body{
@@ -35,7 +35,7 @@ background:rgba(0,0,30,0.85);
 
 backdrop-filter:blur(12px);
 
-display:none;
+display:none; /* hidden until password correct */
 
 justify-content:center;
 
@@ -69,19 +69,9 @@ color:#00ffff;
 
 font-weight:bold;
 
-transition:0.3s;
-
 }
 
-.navbar li:hover{
-
-background:#00ffff;
-
-color:black;
-
-}
-
-/* Dropdown hidden by default */
+/* Dropdown hidden */
 
 .dropdown{
 
@@ -107,39 +97,21 @@ box-shadow:0 0 25px #00ffff;
 
 padding:12px;
 
-color:#00ffff;
+cursor:pointer;
 
 }
 
-.submenu{
-
-display:none;
-
-position:absolute;
-
-top:0;
-
-left:200px;
-
-background:rgba(0,0,60,0.95);
-
-min-width:200px;
-
-box-shadow:0 0 25px #00ffff;
-
-}
-
-/* Active class (shown when clicked) */
+/* Show dropdown */
 
 .show{
 
-display:flex !important;
+display:flex;
 
 flex-direction:column;
 
 }
 
-/* Panel */
+/* ===== PANEL ===== */
 
 .panel{
 
@@ -236,47 +208,33 @@ margin-top:20px;
 <!-- NAVBAR -->
 <div class="navbar">
 <ul>
-<li onclick="toggleMenu('sysMenu')">🌌 SYSTEM
+<li>
+<span onclick="toggleMenu('sysMenu')">🌌 SYSTEM</span>
 <ul class="dropdown" id="sysMenu">
 <li>Status</li>
-<li onclick="toggleSub('sysSub')">Settings ▶
-<ul class="submenu" id="sysSub">
-<li>Display</li>
-<li>Security</li>
-<li>Power</li>
-</ul>
-</li>
+<li>Settings</li>
 <li>Diagnostics</li>
 </ul>
 </li>
-<li onclick="toggleMenu('navMenu')">🛰 NAVIGATION
+<li>
+<span onclick="toggleMenu('navMenu')">🛰 NAVIGATION</span>
 <ul class="dropdown" id="navMenu">
 <li>Galaxy Map</li>
 <li>Plot Course</li>
-<li onclick="toggleSub('navSub')">Coordinates ▶
-<ul class="submenu" id="navSub">
-<li>Alpha</li>
-<li>Beta</li>
-<li>Omega</li>
+<li>Coordinates</li>
 </ul>
 </li>
-</ul>
-</li>
-<li onclick="toggleMenu('defMenu')">🛡 DEFENSE
+<li>
+<span onclick="toggleMenu('defMenu')">🛡 DEFENSE</span>
 <ul class="dropdown" id="defMenu">
 <li>Shields</li>
 <li>Weapons</li>
-<li onclick="toggleSub('defSub')">Combat Mode ▶
-<ul class="submenu" id="defSub">
-<li>Stealth</li>
-<li>Attack</li>
-<li>Defense Grid</li>
-</ul>
-</li>
+<li>Combat Mode</li>
 </ul>
 </li>
 </ul>
 </div>
+<!-- LOGIN PANEL -->
 <div class="panel">
 <div id="login">
 <h2>🌌 ACCESS TERMINAL</h2>
@@ -292,7 +250,7 @@ margin-top:20px;
 </div>
 <script>
 
-/* PASSWORD */
+/* PASSWORD FUNCTION */
 
 function launch(){
 
@@ -336,47 +294,39 @@ alert("ACCESS DENIED");
 
 }
 
-/* TOGGLE MAIN DROPDOWN */
+/* TOGGLE DROPDOWN */
 
 function toggleMenu(id){
 
-closeAll();
+// Close others first
 
-document.getElementById(id).classList.toggle("show");
+document.querySelectorAll(".dropdown").forEach(menu=>{
 
-}
+if(menu.id !== id){
 
-/* TOGGLE SUBMENU */
-
-function toggleSub(id){
-
-event.stopPropagation();
-
-document.getElementById(id).classList.toggle("show");
+menu.classList.remove("show");
 
 }
 
-/* CLOSE ALL MENUS */
+});
 
-function closeAll(){
+// Toggle selected
 
-let dropdowns=document.querySelectorAll(".dropdown");
-
-dropdowns.forEach(d=>d.classList.remove("show"));
-
-let subs=document.querySelectorAll(".submenu");
-
-subs.forEach(s=>s.classList.remove("show"));
+document.getElementById(id).classList.toggle("show");
 
 }
 
 /* Close when clicking outside */
 
-document.addEventListener("click",function(e){
+document.addEventListener("click", function(e){
 
 if(!e.target.closest(".navbar")){
 
-closeAll();
+document.querySelectorAll(".dropdown").forEach(menu=>{
+
+menu.classList.remove("show");
+
+});
 
 }
 
