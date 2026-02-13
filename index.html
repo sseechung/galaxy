@@ -17,7 +17,7 @@ color:#00ffff;
 
 }
 
-/* ===== NAVBAR ALWAYS VISIBLE ===== */
+/* ===== NAVBAR ===== */
 
 .navbar{
 
@@ -30,8 +30,6 @@ left:0;
 width:100%;
 
 background:rgba(0,0,30,0.9);
-
-backdrop-filter:blur(12px);
 
 display:flex;
 
@@ -67,7 +65,7 @@ font-weight:bold;
 
 }
 
-/* Dropdown hidden */
+/* Dropdown style */
 
 .dropdown{
 
@@ -85,7 +83,7 @@ min-width:200px;
 
 flex-direction:column;
 
-box-shadow:0 0 25px #00ffff;
+box-shadow:0 0 20px #00ffff;
 
 }
 
@@ -97,9 +95,9 @@ cursor:pointer;
 
 }
 
-/* Show dropdown */
+/* Active dropdown */
 
-.show{
+.dropdown.active{
 
 display:flex;
 
@@ -200,24 +198,27 @@ margin-top:20px;
 <!-- NAVBAR -->
 <div class="navbar">
 <ul>
-<li>
-<span onclick="toggleMenu('sysMenu')">🌌 SYSTEM</span>
+<li onclick="openMenu(event,'sysMenu')">
+
+🌌 SYSTEM
 <ul class="dropdown" id="sysMenu">
 <li>Status</li>
 <li>Settings</li>
 <li>Diagnostics</li>
 </ul>
 </li>
-<li>
-<span onclick="toggleMenu('navMenu')">🛰 NAVIGATION</span>
+<li onclick="openMenu(event,'navMenu')">
+
+🛰 NAVIGATION
 <ul class="dropdown" id="navMenu">
 <li>Galaxy Map</li>
 <li>Plot Course</li>
 <li>Coordinates</li>
 </ul>
 </li>
-<li>
-<span onclick="toggleMenu('defMenu')">🛡 DEFENSE</span>
+<li onclick="openMenu(event,'defMenu')">
+
+🛡 DEFENSE
 <ul class="dropdown" id="defMenu">
 <li>Shields</li>
 <li>Weapons</li>
@@ -284,41 +285,35 @@ alert("ACCESS DENIED");
 
 }
 
-/* Toggle dropdown on click */
+/* OPEN MENU FUNCTION */
 
-function toggleMenu(id){
+function openMenu(event,id){
 
-// Close other menus
+event.stopPropagation();
 
-document.querySelectorAll(".dropdown").forEach(menu=>{
-
-if(menu.id !== id){
-
-menu.classList.remove("show");
-
-}
-
-});
-
-// Toggle selected
-
-document.getElementById(id).classList.toggle("show");
-
-}
-
-/* Close if click outside navbar */
-
-document.addEventListener("click", function(e){
-
-if(!e.target.closest(".navbar")){
+/* Close all first */
 
 document.querySelectorAll(".dropdown").forEach(menu=>{
 
-menu.classList.remove("show");
+menu.classList.remove("active");
 
 });
 
+/* Open selected */
+
+document.getElementById(id).classList.add("active");
+
 }
+
+/* Close when clicking outside */
+
+document.addEventListener("click",function(){
+
+document.querySelectorAll(".dropdown").forEach(menu=>{
+
+menu.classList.remove("active");
+
+});
 
 });
 </script>
