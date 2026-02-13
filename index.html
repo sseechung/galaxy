@@ -230,11 +230,141 @@ background:#00ffff;
 color:black;
 
 box-shadow:0 0 20px #00ffff;
+/* ===== GALAXY NAVBAR ===== */
 
+.navbar{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+background:rgba(0,0,30,0.85);
+
+backdrop-filter:blur(12px);
+
+display:flex;
+
+justify-content:center;
+
+box-shadow:0 0 25px #00ffff;
+
+z-index:9999;
+
+}
+
+.navbar ul{
+
+list-style:none;
+
+margin:0;
+
+padding:0;
+
+display:flex;
+
+}
+
+.navbar li{
+
+position:relative;
+
+padding:18px 30px;
+
+cursor:pointer;
+
+color:#00ffff;
+
+font-weight:bold;
+
+letter-spacing:1px;
+
+transition:0.3s;
+
+}
+
+.navbar li:hover{
+
+background:#00ffff;
+
+color:black;
+
+box-shadow:0 0 20px #00ffff;
+
+}
+
+/* Dropdown level 1 */
+
+.dropdown{
+
+display:none;
+
+position:absolute;
+
+top:58px;
+
+left:0;
+
+background:rgba(0,0,40,0.95);
+
+min-width:200px;
+
+flex-direction:column;
+
+box-shadow:0 0 25px #00ffff;
+
+}
+
+.dropdown li{
+
+padding:12px;
+
+}
+
+/* Dropdown level 2 */
+
+.submenu{
+
+display:none;
+
+position:absolute;
+
+top:0;
+
+left:200px;
+
+background:rgba(0,0,60,0.95);
+
+min-width:200px;
+
+box-shadow:0 0 25px #00ffff;
+
+}
+
+.navbar li:hover > .dropdown{
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.dropdown li:hover > .submenu{
+
+display:flex;
+
+flex-direction:column;
+
+}
+ 
 }
 </style>
 </head>
 <body>
+
 <audio id="boot">
 <source src="https://www.soundjay.com/misc/sounds/laser-01.mp3" type="audio/mpeg">
 </audio>
@@ -260,7 +390,53 @@ box-shadow:0 0 20px #00ffff;
 </div>
 </div>
 <script>
-
+<div class="navbar">
+<ul>
+<!-- DROPDOWN 1 -->
+<li>🌌 SYSTEM
+<ul class="dropdown">
+<li onclick="alert('System Status Online')">Status</li>
+<li>Settings
+<ul class="submenu">
+<li onclick="alert('Display Config')">Display</li>
+<li onclick="alert('Security Protocol')">Security</li>
+<li onclick="alert('Power Mode')">Power</li>
+</ul>
+</li>
+<li onclick="alert('Diagnostics Running')">Diagnostics</li>
+</ul>
+</li>
+<!-- DROPDOWN 2 -->
+<li>🛰 NAVIGATION
+<ul class="dropdown">
+<li onclick="alert('Opening Galaxy Map')">Galaxy Map</li>
+<li onclick="alert('Plotting Course')">Plot Course</li>
+<li>Coordinates
+<ul class="submenu">
+<li onclick="alert('Alpha Sector')">Alpha</li>
+<li onclick="alert('Beta Sector')">Beta</li>
+<li onclick="alert('Omega Sector')">Omega</li>
+</ul>
+</li>
+</ul>
+</li>
+<!-- DROPDOWN 3 -->
+<li>🛡 DEFENSE
+<ul class="dropdown">
+<li onclick="alert('Shields Up')">Shields</li>
+<li onclick="alert('Weapon Systems Online')">Weapons</li>
+<li>Combat Mode
+<ul class="submenu">
+<li onclick="alert('Stealth Mode')">Stealth</li>
+<li onclick="alert('Attack Mode')">Attack</li>
+<li onclick="alert('Defense Grid')">Defense Grid</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+ 
 let canvas=document.getElementById("space");
 
 let ctx=canvas.getContext("2d");
